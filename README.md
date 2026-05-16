@@ -107,7 +107,7 @@ App: http://localhost:3000 (proxies API to backend)
 
 Deploy a **public URL** (free tier) so anyone can try the app:
 
-1. **[Deploy to Render](https://render.com/deploy?repo=https://github.com/SirGwaine19/major-proj)** — uses `render.yaml` in this repo.
+1. **[Deploy to Render](https://render.com/deploy?repo=https://github.com/SirGwaine19/Diet-LLM-Recommendation)** — uses `render.yaml` in this repo.
 2. Set **`OPENAI_API_KEY`** in the Render dashboard when asked.
 3. Share: **https://diet-recommendation-web.onrender.com** (after deploy finishes).
 

@@ -9,7 +9,7 @@ Host the app on the internet so anyone can open it with a link (no Docker on you
 1. Sign in at [render.com](https://render.com) (free account).
 2. Open this link (uses `render.yaml` in the repo):
 
-   **https://render.com/deploy?repo=https://github.com/SirGwaine19/major-proj**
+   **https://render.com/deploy?repo=https://github.com/SirGwaine19/Diet-LLM-Recommendation**
 
 3. Click **Apply** to create:
    - PostgreSQL database
