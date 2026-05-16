@@ -103,6 +103,16 @@ App: http://localhost:3000 (proxies API to backend)
 | GET | `/api/v1/recommendations/daily` | Today's summary |
 | POST | `/api/v1/recommendations/generate` | Generate daily summary |
 
+## Live demo for recruiters
+
+Deploy a **public URL** (free tier) so anyone can try the app:
+
+1. **[Deploy to Render](https://render.com/deploy?repo=https://github.com/SirGwaine19/major-proj)** — uses `render.yaml` in this repo.
+2. Set **`OPENAI_API_KEY`** in the Render dashboard when asked.
+3. Share: **https://diet-recommendation-web.onrender.com** (after deploy finishes).
+
+Step-by-step: **[RECRUITER_DEPLOY.md](RECRUITER_DEPLOY.md)**
+
 ## Deployment
 
 See **[DEPLOYMENT.md](DEPLOYMENT.md)** for Docker full-stack deploy, cloud PaaS (Render/Railway), and production checklists.
