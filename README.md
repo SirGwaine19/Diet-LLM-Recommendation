@@ -113,6 +113,4 @@ Quick Docker deploy (from repo root, after copying `.env.prod.example` → `.env
 docker compose -f docker-compose.prod.yml up -d --build
 ```
 
-## Build Guide
 
-See [BUILD_GUIDE.md](BUILD_GUIDE.md) for detailed step-by-step instructions.
