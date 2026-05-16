@@ -1,0 +1,76 @@
+================================================================================
+CODE SNIPPETS EXPLAINED
+================================================================================
+Two core functions from the Diet LLM Recommendation System
+
+--------------------------------------------------------------------------------
+1. parse_meal_text(text) — backend/app/services/llm_service.py
+--------------------------------------------------------------------------------
+
+PURPOSE
+  Converts free-form natural language meal descriptions into structured data.
+  Input: "I had 2 slices of pizza and a Coke for lunch"
+  Output: JSON with meal_type and list of items (food_name, quantity, unit, etc.)
+
+HOW IT WORKS
+  • Sends the user's text to OpenAI GPT-4o-mini with a structured prompt.
+  • The prompt instructs the LLM to extract:
+    - food_name, quantity, unit (grams, cups, slices, etc.)
+    - portion_size_category (small/medium/large if unclear)
+    - preparation_method (fried, baked, grilled, etc. if mentioned)
+    - confidence_score (0–1) per item
+    - meal_type (breakfast/lunch/dinner/snack) if inferrable
+  • Rules in the prompt: return valid JSON only, no markdown; never fabricate
+    nutrient values (LLM only extracts names and portions).
+  • Response may be wrapped in ```json ... ```; the code strips that before
+    parsing.
+  • Returns a dict: {"meal_type": "...", "items": [{...}, {...}]}
+
+KEY POINTS
+  • Temperature 0.2 — keeps output consistent and deterministic.
+  • JSON schema in prompt — ensures predictable structure for downstream logic.
+  • No nutrient fabrication — nutrients come from the database, not the LLM.
+
+--------------------------------------------------------------------------------
+2. calculate_nutrients_for_item(food, quantity, unit) — nutrition_service.py
+--------------------------------------------------------------------------------
+
+PURPOSE
+  Computes calories, protein, carbs, fat, fiber, and sodium for a food item
+  given its quantity and unit. The food object holds per-100g values; this
+  function scales them to the actual amount consumed.
+
+INPUTS
+  • food — a Food model with calories_per_100g, protein_per_100g, etc.
+  • quantity — number (e.g. 2 for "2 slices")
+  • unit — optional string (e.g. "grams", "slices", "bowl")
+
+HOW IT WORKS
+  The function uses a "factor" to scale per-100g values:
+
+  • If unit is grams (g, gram, grams, gr):
+    factor = quantity / 100
+    Example: 250g rice → factor = 2.5 → nutrients = per_100g × 2.5
+
+  • If unit is a serving-type (slice, piece, bowl, cup, serving, etc.) or
+    missing:
+    factor = quantity (treated as "number of 100g servings")
+    Example: 2 slices pizza → factor = 2 → nutrients = per_100g × 2
+
+  • Other units (e.g. ml, tbsp): treated as approximate servings;
+    factor = max(0.1, quantity)
+
+  • For each nutrient: result = (food.nutrient_per_100g or 0) × factor
+
+KEY POINTS
+  • Per-100g convention — all foods stored with nutrients per 100g; this
+    function is the bridge to real consumption amounts.
+  • 1 serving ≈ 100g — for slice/bowl/cup, quantity is treated as servings.
+  • factor clamped to min 0.1 — avoids zero or negative values.
+  • Returns dict: {calories, protein_g, carbs_g, fat_g, fiber_g, sodium_mg}
+
+NOTE: match_food_item() runs first to map the parsed food name (e.g. "pizza")
+to a Food row in the DB. calculate_nutrients_for_item() then uses that Food
+and the quantity/unit to compute the actual nutrients.
+
+================================================================================

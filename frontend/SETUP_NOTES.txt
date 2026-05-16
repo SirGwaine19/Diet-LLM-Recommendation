@@ -1,0 +1,11 @@
+Frontend setup (npm install completed)
+
+- 100 packages installed, 101 audited
+- 2 moderate severity vulnerabilities reported
+  To fix: npm audit fix (or npm audit fix --force for breaking changes)
+  Details: npm audit
+
+Run the dev server:
+  npm run dev
+
+Then open http://localhost:3000 (ensure backend is running on http://127.0.0.1:8000)

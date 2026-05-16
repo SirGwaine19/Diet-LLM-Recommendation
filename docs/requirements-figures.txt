@@ -1,0 +1,5 @@
+# Optional: generate report figures (test case table + confusion matrices)
+# pip install -r docs/requirements-figures.txt
+# python docs/scripts/generate_test_figures.py
+
+matplotlib>=3.8.0
