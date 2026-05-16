@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useAuthStore } from '../store/authStore'
 import { authService } from '../services/authService'
 import type { LoginPayload } from '../services/authService'
+import { networkErrorMessage } from '../utils/apiErrors'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ export default function Login() {
       const detail = err.response?.data?.detail
       let msg: string
       if (!err.response) {
-        msg = 'Cannot reach server. Is the backend running at http://localhost:8000?'
+        msg = networkErrorMessage()
       } else if (typeof detail === 'string') {
         msg = detail
       } else if (Array.isArray(detail) && detail.length > 0) {

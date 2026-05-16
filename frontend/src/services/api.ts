@@ -1,6 +1,11 @@
 import axios from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api/v1'
+/** Public Render API — used when VITE_API_URL is missing at build time (common on first deploy). */
+const RENDER_API_BASE = 'https://diet-recommendation-api.onrender.com/api/v1'
+
+export const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? RENDER_API_BASE : '/api/v1')
 
 export const api = axios.create({
   baseURL: API_BASE,

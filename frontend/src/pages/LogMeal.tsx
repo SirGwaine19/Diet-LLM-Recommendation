@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { mealService, type MealResponse } from '../services/mealService'
 import MealInput, { type MealLogFormFields } from '../components/meals/MealInput'
 import NutritionBreakdown from '../components/meals/NutritionBreakdown'
+import { networkErrorMessage } from '../utils/apiErrors'
 
 type FormData = MealLogFormFields
 
@@ -34,7 +35,7 @@ export default function LogMeal() {
       const detail = err.response?.data?.detail
       let msg: string
       if (!err.response) {
-        msg = 'Cannot reach server. Is the backend running?'
+        msg = networkErrorMessage()
       } else if (typeof detail === 'string') {
         msg = detail
       } else if (Array.isArray(detail) && detail.length > 0) {
